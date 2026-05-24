@@ -119,7 +119,6 @@ P0 \= must have for launch. P1 \= must have within 2 weeks of launch. P2 \= nice
 The complete flow a brand user experiences, from landing to sharing:
 
 | User lands on vibecheck.in and sees 3 before/after examples immediately (no login wall) Pastes their own content into the input box, selects content type, clicks Run vibe check Result appears: score circle, verdict, issues list, rewrite. All visible without scrolling on desktop. User copies the rewrite or shares the result card. Sharing generates a unique URL. After 3 checks in a day, email capture prompt appears: Enter your email for 2 bonus checks today After email capture, upgrade prompt: Unlimited checks for your team at $19/mo |
-| :---- |
 
 # **5\. Technical architecture**
 
@@ -127,10 +126,11 @@ The complete flow a brand user experiences, from landing to sharing:
 
 | Layer | Technology | Rationale |
 | :---- | :---- | :---- |
-| Framework | Next.js 14 (App Router) | Bharath already uses it. SSR for OG image generation. |
+| Framework | Next.js 14 (App Router) + **Vercel AI SDK** | Bharath already uses it. Vercel AI SDK provides provider-agnostic model routing and native structured JSON schema validation. |
 | Runtime | Bun | Faster installs and dev server. Compatible with Next.js. |
 | Hosting | Cloudflare Pages | Free tier, global CDN, edge functions for rate limiting. |
-| AI | Claude claude-sonnet-4-20250514 | Best quality/speed trade-off. \~$0.001 per check at current pricing. |
+| AI Model | **DeepSeek-V3 (`deepseek-chat`)** | Default model. Matches GPT-4o / Claude 3.5 Sonnet text quality at 21x-53x lower cost. |
+| Fallback Model | **Llama 3.3 70B via Groq** | Secondary model for sub-300ms latency and high-speed execution pings. |
 | Rate limiting | Upstash Redis | Serverless, no infra, pay-per-request. IP-based daily limits. |
 | Payments | Stripe Checkout | Self-serve billing. Works in India for USD subscriptions. |
 | Email | Resend | Simple API. Free tier for first 3,000 emails/mo. |
@@ -139,22 +139,25 @@ The complete flow a brand user experiences, from landing to sharing:
 
 ## **5.2 Prompt architecture**
 
-The Claude prompt is the core IP of the product. It must be engineered carefully and iterated on before UI work begins.
+The prompt is the core IP of the product. It must be engineered carefully and iterated on before UI work begins.
 
 | System prompt (send once per session) *You are a 22-year-old Gen Z content strategist who grew up on TikTok, Twitter, and Instagram. You review brand content and give brutally honest, specific feedback. You hate corporate speak, hard sells, and anything that sounds like it was written by someone who learned about Gen Z from a marketing report. You care about authenticity, wit, and voice. You always quote specific phrases from the original when explaining problems.* User message template *Review this \[CONTENT\_TYPE\]: \[USER\_TEXT\]. Return a JSON object with: score (0-100 integer), verdict (max 8 words, no punctuation), issues (array of 3-5 strings each quoting a specific phrase and explaining why it fails), rewrite (rewritten version in authentic Gen Z voice, same length as original). Return JSON only, no preamble.* Critical constraints • Temperature: 0.7 — enough variation for personality, not enough for hallucination • Max tokens: 800 — keeps response fast and cost low • Parse JSON strictly — wrap in try/catch, strip markdown fences if present • Do not show a raw score as scientific truth in UI — always pair with the plain-English verdict |
 | :---- |
 
 ## **5.3 Cost model**
 
-At claude-sonnet-4-20250514 pricing (\~$3/M input tokens, \~$15/M output tokens), a typical check costs approximately $0.001–0.003 per request. This means:
+At DeepSeek-V3 pricing (~$0.14/M input tokens, ~$0.28/M output tokens), a typical check costs approximately $0.0001–0.0002 per request. This means:
 
-* 1,000 free checks per day costs \~$1–3 in API fees
+* 1,000 free checks per day costs ~$0.10–0.15 in API fees
 
-* A $19/mo subscriber doing 20 checks/day costs \~$0.60–1.80/mo in API fees
+* A $19/mo subscriber doing 20 checks/day costs ~$0.06–0.09/mo in API fees
 
-* Gross margin on paid subscribers is approximately 90–95%
+* Gross margin on paid subscribers is approximately 99.5%
+
+* Note: Avoid reasoning models like DeepSeek-R1 for this task, as the generation of thinking tokens significantly increases latency (10s+) and billing overhead.
 
 Cost is not a risk at current scale. Monitor monthly and set a $50 API spend alert.
+
 
 # **6\. Revenue model**
 
@@ -348,13 +351,17 @@ Run these 10 inputs against the prompt before shipping. All should produce speci
 | This PRD is complete when: ✅ 1 paying customer exists ✅ They renewed for a second month without being asked ✅ At least one user said the rewrite was better than what they wrote themselves ✅ MRR \> $0 before any new product ideas are explored |
 | :---- |
 
-## **D. v1.1 supplements (May 2026\)**
+## **D. Interconnected Project Documents (May 2026)**
 
-Post-validation artifacts — use these for build, marketing, and design:
+Post-validation and strategic artifacts for construction, marketing, and validation:
 
-| Document | Purpose |
-| :---- | :---- |
-| `.agents/product-marketing-context.md` | Positioning, ICP, personas, objections, brand voice |
-| `DESIGN.md` | Color/type tokens, components, motion, a11y |
-| `docs/v1.1-features.md` | Revised priorities (verdict bands, Fix/Gen Z rewrite, deferred team workspace) |
+| Document | Description / Purpose |
+| :--- | :--- |
+| [Product Marketing Context](file:///Users/bharath/Desktop/on-going-projects/vibe_check_marketing/.agents/product-marketing-context.md) | Positioning, ICP, personas, objections, brand voice guidelines. |
+| [DESIGN.md](file:///Users/bharath/Desktop/on-going-projects/vibe_check_marketing/DESIGN.md) | Design tokens, visual guidelines, typography, components. |
+| [v1.1-features.md](file:///Users/bharath/Desktop/on-going-projects/vibe_check_marketing/docs/v1.1-features.md) | Revised roadmap priorities, verdict bands, and flow modifications. |
+| [project_analysis.md](file:///Users/bharath/.gemini/antigravity/brain/0c6be20d-840f-4b61-bcec-d70a300836f6/project_analysis.md) | 360-degree leadership (CEO, CFO, CTO, PM, VC) analysis. |
+| [growth_strategy.md](file:///Users/bharath/.gemini/antigravity/brain/0c6be20d-840f-4b61-bcec-d70a300836f6/growth_strategy.md) | Moat engineering, GTM loops, and programmatic cold outreach audits. |
+| [unified_mvp_spec.md](file:///Users/bharath/.gemini/antigravity/brain/0c6be20d-840f-4b61-bcec-d70a300836f6/unified_mvp_spec.md) | Unified build blueprint combining product, design, and introvert sales playbooks. |
+
 

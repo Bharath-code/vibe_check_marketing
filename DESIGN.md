@@ -269,4 +269,14 @@ components/
 
 ---
 
-*Aligns with `.agents/product-marketing-context.md` and `docs/v1.1-features.md`.*
+---
+
+## Related Project Documents
+
+*   **PRD:** [vibecheck-prd.md](file:///Users/bharath/Desktop/on-going-projects/vibe_check_marketing/vibecheck-prd.md)
+*   **Marketing Positioning:** [Product Marketing Context](file:///Users/bharath/Desktop/on-going-projects/vibe_check_marketing/.agents/product-marketing-context.md)
+*   **Features:** [v1.1-features.md](file:///Users/bharath/Desktop/on-going-projects/vibe_check_marketing/docs/v1.1-features.md)
+*   **Leadership Analysis:** [project_analysis.md](file:///Users/bharath/.gemini/antigravity/brain/0c6be20d-840f-4b61-bcec-d70a300836f6/project_analysis.md)
+*   **GTM & Moats:** [growth_strategy.md](file:///Users/bharath/.gemini/antigravity/brain/0c6be20d-840f-4b61-bcec-d70a300836f6/growth_strategy.md)
+*   **Unified Blueprint:** [unified_mvp_spec.md](file:///Users/bharath/.gemini/antigravity/brain/0c6be20d-840f-4b61-bcec-d70a300836f6/unified_mvp_spec.md)
+

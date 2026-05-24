@@ -214,8 +214,12 @@
 
 ---
 
-## Related docs
+## Related Project Documents
 
-- `vibecheck-prd.md` — original PRD v1.0
-- `docs/v1.1-features.md` — revised feature prioritization
-- `DESIGN.md` — design tokens and components
+*   **PRD:** [vibecheck-prd.md](file:///Users/bharath/Desktop/on-going-projects/vibe_check_marketing/vibecheck-prd.md)
+*   **Design Guide:** [DESIGN.md](file:///Users/bharath/Desktop/on-going-projects/vibe_check_marketing/DESIGN.md)
+*   **Features:** [v1.1-features.md](file:///Users/bharath/Desktop/on-going-projects/vibe_check_marketing/docs/v1.1-features.md)
+*   **Leadership Analysis:** [project_analysis.md](file:///Users/bharath/.gemini/antigravity/brain/0c6be20d-840f-4b61-bcec-d70a300836f6/project_analysis.md)
+*   **GTM & Moats:** [growth_strategy.md](file:///Users/bharath/.gemini/antigravity/brain/0c6be20d-840f-4b61-bcec-d70a300836f6/growth_strategy.md)
+*   **Unified Blueprint:** [unified_mvp_spec.md](file:///Users/bharath/.gemini/antigravity/brain/0c6be20d-840f-4b61-bcec-d70a300836f6/unified_mvp_spec.md)
+
