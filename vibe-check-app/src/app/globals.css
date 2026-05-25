@@ -1,26 +1,112 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --vc-bg: #0f0f12;
+  --vc-bg-elevated: #18181f;
+  --vc-bg-subtle: #f5f2ec;
+  --vc-surface: #ffffff;
+  --vc-border: rgba(255, 255, 255, 0.08);
+  --vc-border-light: #e8e4dc;
+
+  /* Text */
+  --vc-text: #f5f2ec;
+  --vc-text-muted: #9b9aa8;
+  --vc-text-inverse: #0f0f12;
+  --vc-text-secondary: #5c5b66;
+
+  /* Brand */
+  --vc-accent: #ff5c4d;        /* alert / CTA / hard cringe */
+  --vc-accent-hover: #ff7568;
+  --vc-pass: #3ddba0;          /* clean / fire positive */
+  --vc-warn: #f5a623;          /* needs work */
+  --vc-neutral: #6b8cff;       /* links, focus rings */
+
+  /* Verdict bands */
+  --vc-verdict-cringe: #ff5c4d;
+  --vc-verdict-needs: #f5a623;
+  --vc-verdict-clean: #3ddba0;
+  --vc-verdict-fire: #3ddba0;
+
+  /* Score ring */
+  --vc-ring-track: rgba(255, 255, 255, 0.12);
+  --vc-ring-fill: var(--vc-accent);
+
+  /* Shadows */
+  --vc-shadow-card: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --vc-shadow-elevated: 0 16px 48px rgba(0, 0, 0, 0.24);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-vc-bg: var(--vc-bg);
+  --color-vc-bg-elevated: var(--vc-bg-elevated);
+  --color-vc-bg-subtle: var(--vc-bg-subtle);
+  --color-vc-surface: var(--vc-surface);
+  --color-vc-border: var(--vc-border);
+  --color-vc-border-light: var(--vc-border-light);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-vc-text: var(--vc-text);
+  --color-vc-text-muted: var(--vc-text-muted);
+  --color-vc-text-inverse: var(--vc-text-inverse);
+  --color-vc-text-secondary: var(--vc-text-secondary);
+
+  --color-vc-accent: var(--vc-accent);
+  --color-vc-accent-hover: var(--vc-accent-hover);
+  --color-vc-pass: var(--vc-pass);
+  --color-vc-warn: var(--vc-warn);
+  --color-vc-neutral: var(--vc-neutral);
+
+  --font-display: var(--font-instrument-sans), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--vc-bg);
+  color: var(--vc-text);
+  font-family: var(--font-sans);
+}
+
+/* Custom animations */
+@keyframes stampIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.6) rotate(-15deg);
+    filter: blur(4px);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(0.95) rotate(3deg);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(5deg);
+  }
+}
+
+.animate-stamp-cringe {
+  animation: stampIn 300ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  color: var(--vc-verdict-cringe);
+}
+
+.animate-stamp-needs {
+  animation: stampIn 300ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  color: var(--vc-verdict-needs);
+}
+
+.animate-stamp-clean {
+  animation: stampIn 300ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  color: var(--vc-verdict-clean);
+}
+
+.animate-stamp-fire {
+  animation: stampIn 300ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  color: var(--vc-verdict-fire);
+}
+
+/* Focus style */
+.vc-focus-ring:focus-visible {
+  outline: 2px solid var(--vc-neutral);
+  outline-offset: 2px;
 }
